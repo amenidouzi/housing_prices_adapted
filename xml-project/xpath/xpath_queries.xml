@@ -1,0 +1,197 @@
+<!-- ============================================================ -->
+<!-- XPath Queries Reference                                      -->
+<!-- Housing Prices Dataset - TP1 SOA LSI3 2025-2026             -->
+<!--                                                              -->
+<!-- These expressions can be run with:                           -->
+<!--   - Java (XPathFactory / XPathExpression)                   -->
+<!--   - Saxon-HE CLI                                             -->
+<!--   - VS Code XML extension (XPath evaluation)                -->
+<!--   - xmllint --xpath "..." file.xml                          -->
+<!-- ============================================================ -->
+
+<xpathExamples>
+
+    <!-- ── BASIC SELECTION ───────────────────────────────────────── -->
+    <category name="Basic Selection">
+
+        <!-- Get all house elements -->
+        <query id="Q01" description="Select all house elements">
+            <expression>//house</expression>
+            <result>Returns all 10 house elements in the dataset</result>
+        </query>
+
+        <!-- Get all house IDs (attribute) -->
+        <query id="Q02" description="Get all house IDs">
+            <expression>//house/@id</expression>
+            <result>H001, H002, H003, H004, H005, H006, H007, H008, H009, H010</result>
+        </query>
+
+        <!-- Get all neighborhoods -->
+        <query id="Q03" description="Get all neighborhood names">
+            <expression>//house/location/neighborhood/text()</expression>
+            <result>CollgCr, Veenker, CollgCr, Crawfor, NoRidge, Mitchel, Somerst, NWAmes, OldTown, BrkSide</result>
+        </query>
+
+        <!-- Get all sale prices -->
+        <query id="Q04" description="Get all sale prices">
+            <expression>//house/sale/salePrice</expression>
+            <result>208500, 181500, 223500, 140000, 250000, 143000, 307000, 200000, 129900, 118000</result>
+        </query>
+
+        <!-- Get dataset title -->
+        <query id="Q05" description="Get dataset title from metadata">
+            <expression>/housingDataset/metadata/title/text()</expression>
+            <result>Ames Housing Prices Dataset</result>
+        </query>
+    </category>
+
+    <!-- ── FILTERING / PREDICATES ────────────────────────────────── -->
+    <category name="Filtering with Predicates">
+
+        <!-- Houses with overall quality >= 7 -->
+        <query id="Q06" description="Find houses with overall quality >= 7">
+            <expression>//house[quality/overallQual >= 7]</expression>
+            <result>H001, H003, H004, H005, H007, H008, H009 (7 houses)</result>
+        </query>
+
+        <!-- Houses in CollgCr neighborhood -->
+        <query id="Q07" description="Find houses in CollgCr neighborhood">
+            <expression>//house[location/neighborhood = 'CollgCr']</expression>
+            <result>H001, H003 (2 houses)</result>
+        </query>
+
+        <!-- Houses sold under Normal condition -->
+        <query id="Q08" description="Find houses with Normal sale condition">
+            <expression>//house[sale/saleCondition = 'Normal']</expression>
+            <result>H001, H002, H003, H005, H006, H007, H008, H010 (8 houses)</result>
+        </query>
+
+        <!-- Houses built after year 2000 -->
+        <query id="Q09" description="Find houses built after 2000">
+            <expression>//house[construction/yearBuilt > 2000]</expression>
+            <result>H001 (2003), H003 (2001), H007 (2004) — 3 houses</result>
+        </query>
+
+        <!-- Houses with garage >= 3 cars -->
+        <query id="Q10" description="Find houses with garage capacity >= 3 cars">
+            <expression>//house[rooms/garageCars >= 3]</expression>
+            <result>H004 (3 cars), H005 (3 cars) — 2 houses</result>
+        </query>
+
+        <!-- Houses with central air AND high quality -->
+        <query id="Q11" description="Houses with central air AND overall quality >= 8">
+            <expression>//house[utilities/centralAir = 'Y' and quality/overallQual >= 8]</expression>
+            <result>H005, H007 (2 houses)</result>
+        </query>
+
+        <!-- Houses sold for more than $200,000 -->
+        <query id="Q12" description="Find houses sold for more than $200,000">
+            <expression>//house[sale/salePrice > 200000]</expression>
+            <result>H001, H003, H005, H007 (4 houses)</result>
+        </query>
+
+        <!-- Houses with 3+ bedrooms AND 2+ full bathrooms -->
+        <query id="Q13" description="Houses with 3+ bedrooms AND 2+ full bathrooms">
+            <expression>//house[rooms/bedroomAbvGr >= 3 and rooms/fullBath >= 2]</expression>
+            <result>H001, H002, H003, H005, H007, H008 (6 houses)</result>
+        </query>
+    </category>
+
+    <!-- ── AGGREGATE FUNCTIONS ───────────────────────────────────── -->
+    <category name="Aggregate Functions">
+
+        <!-- Count total houses -->
+        <query id="Q14" description="Count all houses">
+            <expression>count(//house)</expression>
+            <result>10</result>
+        </query>
+
+        <!-- Sum of all sale prices -->
+        <query id="Q15" description="Sum of all sale prices">
+            <expression>sum(//house/sale/salePrice)</expression>
+            <result>1,901,400</result>
+        </query>
+
+        <!-- Maximum sale price -->
+        <query id="Q16" description="Maximum sale price">
+            <expression>max(//house/sale/salePrice)</expression>
+            <result>307000</result>
+        </query>
+
+        <!-- Minimum sale price -->
+        <query id="Q17" description="Minimum sale price">
+            <expression>min(//house/sale/salePrice)</expression>
+            <result>118000</result>
+        </query>
+
+        <!-- Average overall quality -->
+        <query id="Q18" description="Average overall quality score">
+            <expression>avg(//house/quality/overallQual)</expression>
+            <result>6.7</result>
+            <note>avg() is XPath 2.0 — use Saxon-HE or Java XPath 2.0</note>
+        </query>
+
+        <!-- Count houses with central air -->
+        <query id="Q19" description="Count houses with central air conditioning">
+            <expression>count(//house[utilities/centralAir = 'Y'])</expression>
+            <result>9</result>
+        </query>
+    </category>
+
+    <!-- ── SORTING AND POSITION ──────────────────────────────────── -->
+    <category name="Position and Navigation">
+
+        <!-- Get the first house -->
+        <query id="Q20" description="Get the first house">
+            <expression>//house[1]</expression>
+            <result>H001</result>
+        </query>
+
+        <!-- Get the last house -->
+        <query id="Q21" description="Get the last house">
+            <expression>//house[last()]</expression>
+            <result>H010</result>
+        </query>
+
+        <!-- Get house at position 5 -->
+        <query id="Q22" description="Get the fifth house">
+            <expression>//house[5]</expression>
+            <result>H005</result>
+        </query>
+
+        <!-- Most expensive house -->
+        <query id="Q23" description="Find the most expensive house">
+            <expression>//house[sale/salePrice = max(//house/sale/salePrice)]</expression>
+            <result>H007 — $307,000 (Somerst neighborhood)</result>
+        </query>
+
+        <!-- Cheapest house -->
+        <query id="Q24" description="Find the cheapest house">
+            <expression>//house[sale/salePrice = min(//house/sale/salePrice)]</expression>
+            <result>H010 — $118,000 (BrkSide neighborhood)</result>
+        </query>
+    </category>
+
+    <!-- ── STRING FUNCTIONS ──────────────────────────────────────── -->
+    <category name="String Functions">
+
+        <!-- Houses where neighborhood starts with 'C' -->
+        <query id="Q25" description="Houses in neighborhoods starting with 'C'">
+            <expression>//house[starts-with(location/neighborhood, 'C')]</expression>
+            <result>H001, H003 (CollgCr), H004 (Crawfor)</result>
+        </query>
+
+        <!-- Houses with 'Normal' in sale condition -->
+        <query id="Q26" description="Houses containing 'Normal' in saleCondition">
+            <expression>//house[contains(sale/saleCondition, 'Normal')]</expression>
+            <result>8 houses</result>
+        </query>
+
+        <!-- String length of neighborhood name -->
+        <query id="Q27" description="Get the string length of each neighborhood name">
+            <expression>string-length(//house[1]/location/neighborhood)</expression>
+            <result>7 (CollgCr)</result>
+        </query>
+    </category>
+
+</xpathExamples>

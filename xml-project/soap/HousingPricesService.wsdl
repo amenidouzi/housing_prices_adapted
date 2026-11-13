@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    WSDL (Web Services Description Language) for the Housing Prices SOAP Service.
+
+    This service exposes the following operations:
+      1. getPredictedPrice  — Predict a house sale price given its features
+      2. getHouseById       — Retrieve a house record from the XML dataset by ID
+      3. getHousesByNeighborhood — Retrieve all houses in a given neighborhood
+      4. validateHouseXml   — Validate an XML house element against the XSD schema
+
+    Style   : document/literal (WS-I BP 1.1 compliant)
+    Encoding: SOAP 1.1
+-->
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:tns="http://housing.com/prices"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             targetNamespace="http://housing.com/prices"
+             name="HousingPricesService">
+
+    <!-- ============================================================ -->
+    <!-- Types -->
+    <!-- ============================================================ -->
+    <types>
+        <xsd:schema targetNamespace="http://housing.com/prices">
+
+            <!-- ── GetPredictedPrice ──────────────────────────────── -->
+            <xsd:element name="GetPredictedPriceRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="overallQual"    type="xsd:int"/>
+                        <xsd:element name="grLivArea"      type="xsd:int"/>
+                        <xsd:element name="totalBsmtSF"    type="xsd:int"/>
+                        <xsd:element name="yearBuilt"      type="xsd:int"/>
+                        <xsd:element name="garageCars"     type="xsd:int"/>
+                        <xsd:element name="neighborhood"   type="xsd:string"/>
+                        <xsd:element name="centralAir"     type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="GetPredictedPriceResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="predictedPrice" type="xsd:decimal"/>
+                        <xsd:element name="pricePerSqft"   type="xsd:decimal"/>
+                        <xsd:element name="confidence"     type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <!-- ── GetHouseById ───────────────────────────────────── -->
+            <xsd:element name="GetHouseByIdRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="houseId" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="GetHouseByIdResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="houseId"      type="xsd:string"/>
+                        <xsd:element name="neighborhood" type="xsd:string"/>
+                        <xsd:element name="yearBuilt"    type="xsd:int"/>
+                        <xsd:element name="houseStyle"   type="xsd:string"/>
+                        <xsd:element name="overallQual"  type="xsd:int"/>
+                        <xsd:element name="grLivArea"    type="xsd:int"/>
+                        <xsd:element name="salePrice"    type="xsd:decimal"/>
+                        <xsd:element name="found"        type="xsd:boolean"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <!-- ── GetHousesByNeighborhood ────────────────────────── -->
+            <xsd:element name="GetHousesByNeighborhoodRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="neighborhood" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="GetHousesByNeighborhoodResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="count" type="xsd:int"/>
+                        <xsd:element name="houses">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="house" maxOccurs="unbounded">
+                                        <xsd:complexType>
+                                            <xsd:sequence>
+                                                <xsd:element name="houseId"    type="xsd:string"/>
+                                                <xsd:element name="yearBuilt"  type="xsd:int"/>
+                                                <xsd:element name="salePrice"  type="xsd:decimal"/>
+                                            </xsd:sequence>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <!-- ── ValidateHouseXml ───────────────────────────────── -->
+            <xsd:element name="ValidateHouseXmlRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="xmlContent" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="ValidateHouseXmlResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="isValid"       type="xsd:boolean"/>
+                        <xsd:element name="errorMessage"  type="xsd:string" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <!-- ── Fault Type ─────────────────────────────────────── -->
+            <xsd:element name="ServiceFault">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="errorCode"    type="xsd:string"/>
+                        <xsd:element name="errorMessage" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+        </xsd:schema>
+    </types>
+
+    <!-- ============================================================ -->
+    <!-- Messages -->
+    <!-- ============================================================ -->
+
+    <message name="GetPredictedPriceRequestMsg">
+        <part name="parameters" element="tns:GetPredictedPriceRequest"/>
+    </message>
+    <message name="GetPredictedPriceResponseMsg">
+        <part name="parameters" element="tns:GetPredictedPriceResponse"/>
+    </message>
+
+    <message name="GetHouseByIdRequestMsg">
+        <part name="parameters" element="tns:GetHouseByIdRequest"/>
+    </message>
+    <message name="GetHouseByIdResponseMsg">
+        <part name="parameters" element="tns:GetHouseByIdResponse"/>
+    </message>
+
+    <message name="GetHousesByNeighborhoodRequestMsg">
+        <part name="parameters" element="tns:GetHousesByNeighborhoodRequest"/>
+    </message>
+    <message name="GetHousesByNeighborhoodResponseMsg">
+        <part name="parameters" element="tns:GetHousesByNeighborhoodResponse"/>
+    </message>
+
+    <message name="ValidateHouseXmlRequestMsg">
+        <part name="parameters" element="tns:ValidateHouseXmlRequest"/>
+    </message>
+    <message name="ValidateHouseXmlResponseMsg">
+        <part name="parameters" element="tns:ValidateHouseXmlResponse"/>
+    </message>
+
+    <message name="ServiceFaultMsg">
+        <part name="fault" element="tns:ServiceFault"/>
+    </message>
+
+    <!-- ============================================================ -->
+    <!-- Port Type (Interface) -->
+    <!-- ============================================================ -->
+    <portType name="HousingPricesPortType">
+
+        <operation name="getPredictedPrice">
+            <documentation>Predict the sale price of a house given its key features.</documentation>
+            <input  message="tns:GetPredictedPriceRequestMsg"/>
+            <output message="tns:GetPredictedPriceResponseMsg"/>
+            <fault  name="ServiceFault" message="tns:ServiceFaultMsg"/>
+        </operation>
+
+        <operation name="getHouseById">
+            <documentation>Retrieve a house record from the XML dataset by its unique ID.</documentation>
+            <input  message="tns:GetHouseByIdRequestMsg"/>
+            <output message="tns:GetHouseByIdResponseMsg"/>
+            <fault  name="ServiceFault" message="tns:ServiceFaultMsg"/>
+        </operation>
+
+        <operation name="getHousesByNeighborhood">
+            <documentation>Retrieve all house records in a given neighborhood.</documentation>
+            <input  message="tns:GetHousesByNeighborhoodRequestMsg"/>
+            <output message="tns:GetHousesByNeighborhoodResponseMsg"/>
+            <fault  name="ServiceFault" message="tns:ServiceFaultMsg"/>
+        </operation>
+
+        <operation name="validateHouseXml">
+            <documentation>Validate an XML house snippet against the XSD schema.</documentation>
+            <input  message="tns:ValidateHouseXmlRequestMsg"/>
+            <output message="tns:ValidateHouseXmlResponseMsg"/>
+            <fault  name="ServiceFault" message="tns:ServiceFaultMsg"/>
+        </operation>
+
+    </portType>
+
+    <!-- ============================================================ -->
+    <!-- Binding (SOAP 1.1) -->
+    <!-- ============================================================ -->
+    <binding name="HousingPricesBinding" type="tns:HousingPricesPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+        <operation name="getPredictedPrice">
+            <soap:operation soapAction="http://housing.com/prices/getPredictedPrice"/>
+            <input>  <soap:body use="literal"/> </input>
+            <output> <soap:body use="literal"/> </output>
+            <fault name="ServiceFault"> <soap:fault name="ServiceFault" use="literal"/> </fault>
+        </operation>
+
+        <operation name="getHouseById">
+            <soap:operation soapAction="http://housing.com/prices/getHouseById"/>
+            <input>  <soap:body use="literal"/> </input>
+            <output> <soap:body use="literal"/> </output>
+            <fault name="ServiceFault"> <soap:fault name="ServiceFault" use="literal"/> </fault>
+        </operation>
+
+        <operation name="getHousesByNeighborhood">
+            <soap:operation soapAction="http://housing.com/prices/getHousesByNeighborhood"/>
+            <input>  <soap:body use="literal"/> </input>
+            <output> <soap:body use="literal"/> </output>
+            <fault name="ServiceFault"> <soap:fault name="ServiceFault" use="literal"/> </fault>
+        </operation>
+
+        <operation name="validateHouseXml">
+            <soap:operation soapAction="http://housing.com/prices/validateHouseXml"/>
+            <input>  <soap:body use="literal"/> </input>
+            <output> <soap:body use="literal"/> </output>
+            <fault name="ServiceFault"> <soap:fault name="ServiceFault" use="literal"/> </fault>
+        </operation>
+
+    </binding>
+
+    <!-- ============================================================ -->
+    <!-- Service (Endpoint) -->
+    <!-- ============================================================ -->
+    <service name="HousingPricesService">
+        <documentation>
+            SOAP Web Service for Housing Prices — TP1 SOA LSI3 2025-2026
+            Exposes XML data operations: price prediction, house retrieval, and XML validation.
+        </documentation>
+        <port name="HousingPricesPort" binding="tns:HousingPricesBinding">
+            <soap:address location="http://localhost:8080/housing-prices/ws"/>
+        </port>
+    </service>
+
+</definitions>

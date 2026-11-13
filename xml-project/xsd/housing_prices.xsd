@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <!-- ============================================================ -->
+    <!-- Root Element -->
+    <!-- ============================================================ -->
+    <xs:element name="housingDataset" type="HousingDatasetType"/>
+
+    <!-- ============================================================ -->
+    <!-- Root Type -->
+    <!-- ============================================================ -->
+    <xs:complexType name="HousingDatasetType">
+        <xs:sequence>
+            <xs:element name="metadata" type="MetadataType"/>
+            <xs:element name="houses" type="HousesType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- ============================================================ -->
+    <!-- Metadata Type -->
+    <!-- ============================================================ -->
+    <xs:complexType name="MetadataType">
+        <xs:sequence>
+            <xs:element name="title" type="xs:string"/>
+            <xs:element name="description" type="xs:string"/>
+            <xs:element name="source" type="xs:string"/>
+            <xs:element name="year" type="xs:string"/>
+            <xs:element name="totalRecords" type="xs:positiveInteger"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- ============================================================ -->
+    <!-- Houses Container Type -->
+    <!-- ============================================================ -->
+    <xs:complexType name="HousesType">
+        <xs:sequence>
+            <xs:element name="house" type="HouseType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- ============================================================ -->
+    <!-- Individual House Type -->
+    <!-- ============================================================ -->
+    <xs:complexType name="HouseType">
+        <xs:sequence>
+            <xs:element name="location"     type="LocationType"/>
+            <xs:element name="construction" type="ConstructionType"/>
+            <xs:element name="quality"      type="QualityType"/>
+            <xs:element name="areas"        type="AreasType"/>
+            <xs:element name="rooms"        type="RoomsType"/>
+            <xs:element name="utilities"    type="UtilitiesType"/>
+            <xs:element name="sale"         type="SaleType"/>
+        </xs:sequence>
+        <xs:attribute name="id" type="HouseIdType" use="required"/>
+    </xs:complexType>
+
+    <!-- House ID restricted pattern: H followed by 3 digits -->
+    <xs:simpleType name="HouseIdType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="H\d{3}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- ============================================================ -->
+    <!-- Location Type -->
+    <!-- ============================================================ -->
+    <xs:complexType name="LocationType">
+        <xs:sequence>
+            <xs:element name="neighborhood" type="xs:string"/>
+            <xs:element name="msZoning"     type="MSZoningType"/>
+            <xs:element name="lotArea"      type="xs:positiveInteger"/>
+            <xs:element name="street"       type="StreetType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="MSZoningType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="A"/>   <!-- Agriculture -->
+            <xs:enumeration value="C"/>   <!-- Commercial -->
+            <xs:enumeration value="FV"/>  <!-- Floating Village -->
+            <xs:enumeration value="I"/>   <!-- Industrial -->
+            <xs:enumeration value="RH"/>  <!-- Residential High Density -->
+            <xs:enumeration value="RL"/>  <!-- Residential Low Density -->
+            <xs:enumeration value="RP"/>  <!-- Residential Low Density Park -->
+            <xs:enumeration value="RM"/>  <!-- Residential Medium Density -->
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="StreetType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Grvl"/> <!-- Gravel -->
+            <xs:enumeration value="Pave"/> <!-- Paved -->
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- ============================================================ -->
+    <!-- Construction Type -->
+    <!-- ============================================================ -->
+    <xs:complexType name="ConstructionType">
+        <xs:sequence>
+            <xs:element name="yearBuilt"     type="YearType"/>
+            <xs:element name="yearRemodAdd"  type="YearType"/>
+            <xs:element name="houseStyle"    type="HouseStyleType"/>
+            <xs:element name="foundation"    type="FoundationType"/>
+            <xs:element name="roofStyle"     type="xs:string"/>
+            <xs:element name="exterior"      type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="YearType">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1800"/>
+            <xs:maxInclusive value="2025"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="HouseStyleType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="1Story"/>
+            <xs:enumeration value="1.5Fin"/>
+            <xs:enumeration value="1.5Unf"/>
+            <xs:enumeration value="2Story"/>
+            <xs:enumeration value="2.5Fin"/>
+            <xs:enumeration value="2.5Unf"/>
+            <xs:enumeration value="SFoyer"/>
+            <xs:enumeration value="SLvl"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="FoundationType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="BrkTil"/> <!-- Brick and Tile -->
+            <xs:enumeration value="CBlock"/> <!-- Cinder Block -->
+            <xs:enumeration value="PConc"/>  <!-- Poured Concrete -->
+            <xs:enumeration value="Slab"/>   <!-- Slab -->
+            <xs:enumeration value="Stone"/>  <!-- Stone -->
+            <xs:enumeration value="Wood"/>   <!-- Wood -->
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- ============================================================ -->
+    <!-- Quality Type -->
+    <!-- ============================================================ -->
+    <xs:complexType name="QualityType">
+        <xs:sequence>
+            <xs:element name="overallQual" type="QualityScoreType"/>
+            <xs:element name="overallCond" type="QualityScoreType"/>
+            <xs:element name="exterQual"   type="QualityRatingType"/>
+            <xs:element name="kitchenQual" type="QualityRatingType"/>
+            <xs:element name="bsmtQual"    type="QualityRatingType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Overall quality/condition: 1-10 -->
+    <xs:simpleType name="QualityScoreType">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="10"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Quality rating: Ex, Gd, TA, Fa, Po -->
+    <xs:simpleType name="QualityRatingType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Ex"/> <!-- Excellent -->
+            <xs:enumeration value="Gd"/> <!-- Good -->
+            <xs:enumeration value="TA"/> <!-- Typical/Average -->
+            <xs:enumeration value="Fa"/> <!-- Fair -->
+            <xs:enumeration value="Po"/> <!-- Poor -->
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- ============================================================ -->
+    <!-- Areas Type -->
+    <!-- ============================================================ -->
+    <xs:complexType name="AreasType">
+        <xs:sequence>
+            <xs:element name="grLivArea"    type="xs:nonNegativeInteger"/>
+            <xs:element name="totalBsmtSF"  type="xs:nonNegativeInteger"/>
+            <xs:element name="garageArea"   type="xs:nonNegativeInteger"/>
+            <xs:element name="lotArea"      type="xs:positiveInteger"/>
+            <xs:element name="openPorchSF"  type="xs:nonNegativeInteger"/>
+            <xs:element name="woodDeckSF"   type="xs:nonNegativeInteger"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- ============================================================ -->
+    <!-- Rooms Type -->
+    <!-- ============================================================ -->
+    <xs:complexType name="RoomsType">
+        <xs:sequence>
+            <xs:element name="totRmsAbvGrd" type="xs:positiveInteger"/>
+            <xs:element name="bedroomAbvGr" type="xs:nonNegativeInteger"/>
+            <xs:element name="fullBath"     type="xs:nonNegativeInteger"/>
+            <xs:element name="halfBath"     type="xs:nonNegativeInteger"/>
+            <xs:element name="fireplaces"   type="xs:nonNegativeInteger"/>
+            <xs:element name="garageCars"   type="xs:nonNegativeInteger"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- ============================================================ -->
+    <!-- Utilities Type -->
+    <!-- ============================================================ -->
+    <xs:complexType name="UtilitiesType">
+        <xs:sequence>
+            <xs:element name="centralAir"  type="YesNoType"/>
+            <xs:element name="heating"     type="xs:string"/>
+            <xs:element name="heatingQC"   type="QualityRatingType"/>
+            <xs:element name="electrical"  type="ElectricalType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="YesNoType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Y"/>
+            <xs:enumeration value="N"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="ElectricalType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SBrkr"/> <!-- Standard Circuit Breakers -->
+            <xs:enumeration value="FuseA"/> <!-- Fuse Box (60 Amp) -->
+            <xs:enumeration value="FuseF"/> <!-- Fuse Box (60 Amp) Fair -->
+            <xs:enumeration value="FuseP"/> <!-- Fuse Box (60 Amp) Poor -->
+            <xs:enumeration value="Mix"/>   <!-- Mixed -->
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- ============================================================ -->
+    <!-- Sale Type -->
+    <!-- ============================================================ -->
+    <xs:complexType name="SaleType">
+        <xs:sequence>
+            <xs:element name="yrSold"        type="YearType"/>
+            <xs:element name="moSold"        type="MonthType"/>
+            <xs:element name="saleType"      type="xs:string"/>
+            <xs:element name="saleCondition" type="SaleConditionType"/>
+            <xs:element name="salePrice"     type="xs:positiveInteger"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="MonthType">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="12"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="SaleConditionType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Normal"/>  <!-- Normal sale -->
+            <xs:enumeration value="Abnorml"/> <!-- Abnormal sale -->
+            <xs:enumeration value="AdjLand"/> <!-- Adjoining land purchase -->
+            <xs:enumeration value="Alloca"/>  <!-- Allocation -->
+            <xs:enumeration value="Family"/>  <!-- Sale between family members -->
+            <xs:enumeration value="Partial"/> <!-- Home not completed when last assessed -->
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

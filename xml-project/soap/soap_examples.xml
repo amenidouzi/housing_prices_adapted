@@ -1,0 +1,189 @@
+<!--
+    SOAP Request/Response Examples for the Housing Prices Service
+    Use these with SoapUI, Postman, or any SOAP client.
+    Endpoint: http://localhost:8080/housing-prices/ws
+-->
+
+<!-- ================================================================== -->
+<!-- Operation 1: getPredictedPrice                                      -->
+<!-- ================================================================== -->
+
+<!-- REQUEST -->
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:hous="http://housing.com/prices">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <hous:GetPredictedPriceRequest>
+            <hous:overallQual>7</hous:overallQual>
+            <hous:grLivArea>1710</hous:grLivArea>
+            <hous:totalBsmtSF>856</hous:totalBsmtSF>
+            <hous:yearBuilt>2003</hous:yearBuilt>
+            <hous:garageCars>2</hous:garageCars>
+            <hous:neighborhood>CollgCr</hous:neighborhood>
+            <hous:centralAir>Y</hous:centralAir>
+        </hous:GetPredictedPriceRequest>
+    </soapenv:Body>
+</soapenv:Envelope>
+
+<!-- RESPONSE -->
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:hous="http://housing.com/prices">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <hous:GetPredictedPriceResponse>
+            <hous:predictedPrice>208750.00</hous:predictedPrice>
+            <hous:pricePerSqft>82.15</hous:pricePerSqft>
+            <hous:confidence>High</hous:confidence>
+        </hous:GetPredictedPriceResponse>
+    </soapenv:Body>
+</soapenv:Envelope>
+
+<!-- ================================================================== -->
+<!-- Operation 2: getHouseById                                           -->
+<!-- ================================================================== -->
+
+<!-- REQUEST -->
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:hous="http://housing.com/prices">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <hous:GetHouseByIdRequest>
+            <hous:houseId>H005</hous:houseId>
+        </hous:GetHouseByIdRequest>
+    </soapenv:Body>
+</soapenv:Envelope>
+
+<!-- RESPONSE -->
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:hous="http://housing.com/prices">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <hous:GetHouseByIdResponse>
+            <hous:houseId>H005</hous:houseId>
+            <hous:neighborhood>NoRidge</hous:neighborhood>
+            <hous:yearBuilt>2000</hous:yearBuilt>
+            <hous:houseStyle>2Story</hous:houseStyle>
+            <hous:overallQual>8</hous:overallQual>
+            <hous:grLivArea>2198</hous:grLivArea>
+            <hous:salePrice>250000.00</hous:salePrice>
+            <hous:found>true</hous:found>
+        </hous:GetHouseByIdResponse>
+    </soapenv:Body>
+</soapenv:Envelope>
+
+<!-- ================================================================== -->
+<!-- Operation 3: getHousesByNeighborhood                                -->
+<!-- ================================================================== -->
+
+<!-- REQUEST -->
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:hous="http://housing.com/prices">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <hous:GetHousesByNeighborhoodRequest>
+            <hous:neighborhood>CollgCr</hous:neighborhood>
+        </hous:GetHousesByNeighborhoodRequest>
+    </soapenv:Body>
+</soapenv:Envelope>
+
+<!-- RESPONSE -->
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:hous="http://housing.com/prices">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <hous:GetHousesByNeighborhoodResponse>
+            <hous:count>2</hous:count>
+            <hous:houses>
+                <hous:house>
+                    <hous:houseId>H001</hous:houseId>
+                    <hous:yearBuilt>2003</hous:yearBuilt>
+                    <hous:salePrice>208500.00</hous:salePrice>
+                </hous:house>
+                <hous:house>
+                    <hous:houseId>H003</hous:houseId>
+                    <hous:yearBuilt>2001</hous:yearBuilt>
+                    <hous:salePrice>223500.00</hous:salePrice>
+                </hous:house>
+            </hous:houses>
+        </hous:GetHousesByNeighborhoodResponse>
+    </soapenv:Body>
+</soapenv:Envelope>
+
+<!-- ================================================================== -->
+<!-- Operation 4: validateHouseXml                                       -->
+<!-- ================================================================== -->
+
+<!-- REQUEST -->
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:hous="http://housing.com/prices">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <hous:ValidateHouseXmlRequest>
+            <hous:xmlContent><![CDATA[
+                <house id="H011">
+                    <location>
+                        <neighborhood>CollgCr</neighborhood>
+                        <msZoning>RL</msZoning>
+                        <lotArea>9000</lotArea>
+                        <street>Pave</street>
+                    </location>
+                    <construction>
+                        <yearBuilt>2005</yearBuilt>
+                        <yearRemodAdd>2005</yearRemodAdd>
+                        <houseStyle>2Story</houseStyle>
+                        <foundation>PConc</foundation>
+                        <roofStyle>Gable</roofStyle>
+                        <exterior>VinylSd</exterior>
+                    </construction>
+                    <quality>
+                        <overallQual>8</overallQual>
+                        <overallCond>5</overallCond>
+                        <exterQual>Gd</exterQual>
+                        <kitchenQual>Gd</kitchenQual>
+                        <bsmtQual>Gd</bsmtQual>
+                    </quality>
+                    <areas>
+                        <grLivArea>1800</grLivArea>
+                        <totalBsmtSF>900</totalBsmtSF>
+                        <garageArea>500</garageArea>
+                        <lotArea>9000</lotArea>
+                        <openPorchSF>50</openPorchSF>
+                        <woodDeckSF>0</woodDeckSF>
+                    </areas>
+                    <rooms>
+                        <totRmsAbvGrd>8</totRmsAbvGrd>
+                        <bedroomAbvGr>3</bedroomAbvGr>
+                        <fullBath>2</fullBath>
+                        <halfBath>1</halfBath>
+                        <fireplaces>1</fireplaces>
+                        <garageCars>2</garageCars>
+                    </rooms>
+                    <utilities>
+                        <centralAir>Y</centralAir>
+                        <heating>GasA</heating>
+                        <heatingQC>Ex</heatingQC>
+                        <electrical>SBrkr</electrical>
+                    </utilities>
+                    <sale>
+                        <yrSold>2009</yrSold>
+                        <moSold>6</moSold>
+                        <saleType>WD</saleType>
+                        <saleCondition>Normal</saleCondition>
+                        <salePrice>230000</salePrice>
+                    </sale>
+                </house>
+            ]]></hous:xmlContent>
+        </hous:ValidateHouseXmlRequest>
+    </soapenv:Body>
+</soapenv:Envelope>
+
+<!-- RESPONSE -->
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:hous="http://housing.com/prices">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <hous:ValidateHouseXmlResponse>
+            <hous:isValid>true</hous:isValid>
+        </hous:ValidateHouseXmlResponse>
+    </soapenv:Body>
+</soapenv:Envelope>

@@ -1,0 +1,70 @@
+﻿=== PAGE 1 ===
+ 
+FACULT├ë 
+DES 
+SCIENCES 
+DE SFAX 
+ 
+D├®partement dÔÇÖinformatique et des Communications 
+Ann├®e Universitaire : 2025-2026 
+TP1 : Mod├®lisation XML et Interrogation 
+XPath avec Maven en Java  
+Mati├¿reÔÇï
+: Architecture SOA et services web  
+Fili├¿reÔÇï
+: LSI3 
+Enseignantes Responsables : Corinne Amel ZAYANI, Hela  HAKIM, Rim 
+MOHAMED 
+ 
+Objectif p├®dagogique 
+├Ç lÔÇÖissue de ce TP, lÔÇÖ├®tudiant sera capable de :ÔÇï 
+- Choisir un domaine r├®el et le mod├®liser en XML.ÔÇï
+ 
+- Cr├®er un sch├®ma XSD pour valider la structure XML.ÔÇï
+ 
+- Cr├®er un projet Maven en Java avec les d├®pendances n├®cessaires.ÔÇï 
+- Impl├®menter la validation XML/XSD.ÔÇï
+ 
+- Interroger le document XML avec XPath.ÔÇï
+ 
+Outils et pr├®requis 
+- IntelliJ IDEA Community Edition 
+- Java JDK 1.8 ou sup├®rieur 
+- Maven 
+- API Javax.xml (JAXP, XPath) 
+- Fichiers XML et XSD 
+Validateur XML : Outil Professionnel de Validation de Sch├®ma XML en Ligne 
+ D├®roulement de lÔÇÖactivit├®  
+ 
+ ├ëtape 1 ÔÇô Choix du domaine et mod├®lisation XML  
+ Choisissez un domaine r├®el (cin├®ma, ├®nergie, r├®seau social, etc.). 
+ D├®finissez les entit├®s principales et cr├®ez un fichier XML repr├®sentant ces donn├®es.  
+├ëtape 2 ÔÇô Cr├®ation du sch├®ma XSD   
+Cr├®ez un fichier XSD qui d├®crit la structure attendue du document XML.  
+├ëtape 3 ÔÇô Cr├®ation du projet Maven  
+ Cr├®ez un projet Maven dans IntelliJ IDEA. Ajoutez les d├®pendances n├®cessaires dans le fichier 
+pom.xml.  
+├ëtape 4 ÔÇô Impl├®mentation de la validation XML/XSD  
+1 
+ 
+
+=== PAGE 2 ===
+Utilisez SchemaFactory et Validator pour valider le document XML avec le sch├®ma XSD.  
+├ëtape 5 ÔÇô Interrogation XPath  
+Utilisez XPathFactory et XPathExpression pour interroger le document XML.  
+Exemples de requ├¬tes : - Trouver tous les titres de films - Extraire les utilisateurs actifs - Lister les 
+produits en promotion 
+ ├ëtape 6 ÔÇô Test et v├®rification  
+Ex├®cutez la classe Java principale et v├®rifiez les r├®sultats des deux fonctionnalit├®s. 
+Livrables attendus  
+Dans gitHub 
+- Un fichier pom.xml avec les d├®pendances n├®cessaires  
+- Un fichier XML et son sch├®ma XSD 
+ - Une classe Java principale avec les deux fonctionnalit├®s :  
+ÔÇï 1. Validation XML/XSD 
+2.ÔÇï Interrogation XPath  
+- Un document expliquant votre mod├®lisation (structure, choix, exemples de requ├¬tes XPath) 
+Dans lÔÇÖespace de d├®p├┤t de la plateforme le lien de votre repository gitHub 
+2 
+ 
+
